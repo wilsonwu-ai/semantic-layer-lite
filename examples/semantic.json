@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "entities": {
+    "customers": {
+      "primary_key": ["customer_id"],
+      "columns": {"customer_id": "INTEGER", "name": "TEXT", "region": "TEXT", "signup_date": "TEXT"}
+    },
+    "order_items": {
+      "primary_key": ["item_id"],
+      "columns": {"item_id": "INTEGER", "order_id": "INTEGER", "product_id": "INTEGER", "quantity": "INTEGER", "unit_price": "REAL", "line_total": "REAL"}
+    },
+    "orders": {
+      "primary_key": ["order_id"],
+      "columns": {"order_id": "INTEGER", "customer_id": "INTEGER", "order_date": "TEXT", "status": "TEXT"}
+    },
+    "payments": {
+      "primary_key": ["payment_id"],
+      "columns": {"payment_id": "INTEGER", "order_id": "INTEGER", "method": "TEXT", "amount": "REAL", "paid_date": "TEXT"}
+    },
+    "products": {
+      "primary_key": ["product_id"],
+      "columns": {"product_id": "INTEGER", "name": "TEXT", "category": "TEXT", "unit_price": "REAL"}
+    },
+    "shipments": {
+      "primary_key": ["shipment_id"],
+      "columns": {"shipment_id": "INTEGER", "order_id": "INTEGER", "item_id": "INTEGER", "carrier": "TEXT", "shipped_date": "TEXT"}
+    }
+  },
+  "joins": [
+    {
+      "id": "order_items.order_id=orders.order_id",
+      "from_table": "order_items", "from_column": "order_id",
+      "to_table": "orders", "to_column": "order_id",
+      "cardinality": "many_to_one", "status": "approved",
+      "evidence": {"source": "declared_foreign_key"}
+    },
+    {
+      "id": "order_items.product_id=products.product_id",
+      "from_table": "order_items", "from_column": "product_id",
+      "to_table": "products", "to_column": "product_id",
+      "cardinality": "many_to_one", "status": "approved",
+      "evidence": {"source": "inferred", "name_rule": "table_name_id"}
+    },
+    {
+      "id": "orders.customer_id=customers.customer_id",
+      "from_table": "orders", "from_column": "customer_id",
+      "to_table": "customers", "to_column": "customer_id",
+      "cardinality": "many_to_one", "status": "approved",
+      "evidence": {"source": "declared_foreign_key"}
+    },
+    {
+      "id": "payments.order_id=orders.order_id",
+      "from_table": "payments", "from_column": "order_id",
+      "to_table": "orders", "to_column": "order_id",
+      "cardinality": "many_to_one", "status": "approved",
+      "evidence": {"source": "inferred", "name_rule": "table_name_id"}
+    },
+    {
+      "id": "shipments.item_id=order_items.item_id",
+      "from_table": "shipments", "from_column": "item_id",
+      "to_table": "order_items", "to_column": "item_id",
+      "cardinality": "many_to_one", "status": "approved",
+      "evidence": {"source": "inferred", "name_rule": "same_key_name"}
+    },
+    {
+      "id": "shipments.order_id=orders.order_id",
+      "from_table": "shipments", "from_column": "order_id",
+      "to_table": "orders", "to_column": "order_id",
+      "cardinality": "many_to_one", "status": "approved",
+      "evidence": {"source": "inferred", "name_rule": "table_name_id"}
+    }
+  ],
+  "metrics": [
+    {
+      "name": "avg_list_price", "base_table": "products", "aggregation": "avg", "expression": "unit_price",
+      "description": "Average list price of a product", "status": "approved", "time_dimension": null
+    },
+    {
+      "name": "cash_collected", "base_table": "payments", "aggregation": "sum", "expression": "amount",
+      "description": "Money received, summed over payment rows", "status": "approved", "time_dimension": "paid_date"
+    },
+    {
+      "name": "customer_count", "base_table": "customers", "aggregation": "count_distinct", "expression": "customer_id",
+      "description": "Number of distinct customers", "status": "approved", "time_dimension": "signup_date"
+    },
+    {
+      "name": "order_count", "base_table": "orders", "aggregation": "count_distinct", "expression": "order_id",
+      "description": "Number of distinct orders", "status": "approved", "time_dimension": "order_date"
+    },
+    {
+      "name": "payment_count", "base_table": "payments", "aggregation": "count", "expression": "*",
+      "description": "Number of payment rows", "status": "approved", "time_dimension": "paid_date"
+    },
+    {
+      "name": "revenue", "base_table": "order_items", "aggregation": "sum", "expression": "line_total",
+      "description": "Sales value of order lines, dated by the order", "status": "approved", "time_dimension": "order_date"
+    },
+    {
+      "name": "shipment_count", "base_table": "shipments", "aggregation": "count", "expression": "*",
+      "description": "Number of shipment rows", "status": "approved", "time_dimension": "shipped_date"
+    },
+    {
+      "name": "units_sold", "base_table": "order_items", "aggregation": "sum", "expression": "quantity",
+      "description": "Units on order lines, dated by the order", "status": "approved", "time_dimension": "order_date"
+    }
+  ],
+  "dimensions": [
+    {"name": "carrier", "table": "shipments", "column": "carrier", "kind": "categorical"},
+    {"name": "category", "table": "products", "column": "category", "kind": "categorical"},
+    {"name": "method", "table": "payments", "column": "method", "kind": "categorical"},
+    {"name": "order_date", "table": "orders", "column": "order_date", "kind": "time"},
+    {"name": "paid_date", "table": "payments", "column": "paid_date", "kind": "time"},
+    {"name": "region", "table": "customers", "column": "region", "kind": "categorical"},
+    {"name": "shipped_date", "table": "shipments", "column": "shipped_date", "kind": "time"},
+    {"name": "signup_date", "table": "customers", "column": "signup_date", "kind": "time"},
+    {"name": "status", "table": "orders", "column": "status", "kind": "categorical"}
+  ]
+}

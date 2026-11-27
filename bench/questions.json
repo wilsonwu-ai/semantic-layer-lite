@@ -1,0 +1,125 @@
+{
+  "note": "Twenty business questions. Each has a metric query for the compiler and a hand-written reference SQL statement that follows the correct route. Reference SQL uses substr() for time grains so it does not share code with the compiler's strftime().",
+  "questions": [
+    {
+      "id": "Q01", "question": "What is total revenue?",
+      "query": {"metrics": ["revenue"]},
+      "reference_sql": "SELECT SUM(line_total) FROM order_items",
+      "reference_params": []
+    },
+    {
+      "id": "Q02", "question": "What is revenue by month?",
+      "query": {"metrics": ["revenue"], "dimensions": ["month"]},
+      "reference_sql": "SELECT substr(o.order_date, 1, 7), SUM(i.line_total) FROM order_items i LEFT JOIN orders o ON o.order_id = i.order_id GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q03", "question": "What is revenue by customer region?",
+      "query": {"metrics": ["revenue"], "dimensions": ["region"]},
+      "reference_sql": "SELECT c.region, SUM(i.line_total) FROM order_items i LEFT JOIN orders o ON o.order_id = i.order_id LEFT JOIN customers c ON c.customer_id = o.customer_id GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q04", "question": "What is revenue by product category?",
+      "query": {"metrics": ["revenue"], "dimensions": ["category"]},
+      "reference_sql": "SELECT p.category, SUM(i.line_total) FROM order_items i LEFT JOIN products p ON p.product_id = i.product_id GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q05", "question": "What is revenue by region and category?",
+      "query": {"metrics": ["revenue"], "dimensions": ["region", "category"]},
+      "reference_sql": "SELECT c.region, p.category, SUM(i.line_total) FROM order_items i LEFT JOIN orders o ON o.order_id = i.order_id LEFT JOIN customers c ON c.customer_id = o.customer_id LEFT JOIN products p ON p.product_id = i.product_id GROUP BY 1, 2 ORDER BY 1, 2",
+      "reference_params": []
+    },
+    {
+      "id": "Q06", "question": "What is revenue by month for West customers?",
+      "query": {"metrics": ["revenue"], "dimensions": ["month"], "filters": [{"dimension": "region", "op": "=", "value": "West"}]},
+      "reference_sql": "SELECT substr(o.order_date, 1, 7), SUM(i.line_total) FROM order_items i LEFT JOIN orders o ON o.order_id = i.order_id LEFT JOIN customers c ON c.customer_id = o.customer_id WHERE c.region = ? GROUP BY 1 ORDER BY 1",
+      "reference_params": ["West"]
+    },
+    {
+      "id": "Q07", "question": "What is revenue by day for the first week of March?",
+      "query": {"metrics": ["revenue"], "dimensions": ["day"], "filters": [{"dimension": "order_date", "op": ">=", "value": "2026-03-01"}, {"dimension": "order_date", "op": "<", "value": "2026-03-08"}]},
+      "reference_sql": "SELECT substr(o.order_date, 1, 10), SUM(i.line_total) FROM order_items i LEFT JOIN orders o ON o.order_id = i.order_id WHERE o.order_date >= ? AND o.order_date < ? GROUP BY 1 ORDER BY 1",
+      "reference_params": ["2026-03-01", "2026-03-08"]
+    },
+    {
+      "id": "Q08", "question": "How many units were sold by category?",
+      "query": {"metrics": ["units_sold"], "dimensions": ["category"]},
+      "reference_sql": "SELECT p.category, SUM(i.quantity) FROM order_items i LEFT JOIN products p ON p.product_id = i.product_id GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q09", "question": "How many units were sold by order status?",
+      "query": {"metrics": ["units_sold"], "dimensions": ["status"]},
+      "reference_sql": "SELECT o.status, SUM(i.quantity) FROM order_items i LEFT JOIN orders o ON o.order_id = i.order_id GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q10", "question": "How many orders are there?",
+      "query": {"metrics": ["order_count"]},
+      "reference_sql": "SELECT COUNT(DISTINCT order_id) FROM orders",
+      "reference_params": []
+    },
+    {
+      "id": "Q11", "question": "How many orders are there by status?",
+      "query": {"metrics": ["order_count"], "dimensions": ["status"]},
+      "reference_sql": "SELECT status, COUNT(DISTINCT order_id) FROM orders GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q12", "question": "How many orders are there by month?",
+      "query": {"metrics": ["order_count"], "dimensions": ["month"]},
+      "reference_sql": "SELECT substr(order_date, 1, 7), COUNT(DISTINCT order_id) FROM orders GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q13", "question": "How many orders are there by customer region?",
+      "query": {"metrics": ["order_count"], "dimensions": ["region"]},
+      "reference_sql": "SELECT c.region, COUNT(DISTINCT o.order_id) FROM orders o LEFT JOIN customers c ON c.customer_id = o.customer_id GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q14", "question": "How many distinct orders went out with each carrier?",
+      "query": {"metrics": ["order_count"], "dimensions": ["carrier"]},
+      "reference_sql": "SELECT s.carrier, COUNT(DISTINCT o.order_id) FROM orders o LEFT JOIN shipments s ON s.order_id = o.order_id GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q15", "question": "How many customers are there by region?",
+      "query": {"metrics": ["customer_count"], "dimensions": ["region"]},
+      "reference_sql": "SELECT region, COUNT(DISTINCT customer_id) FROM customers GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q16", "question": "How many customers signed up each year?",
+      "query": {"metrics": ["customer_count"], "dimensions": ["year"]},
+      "reference_sql": "SELECT substr(signup_date, 1, 4), COUNT(DISTINCT customer_id) FROM customers GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q17", "question": "How much cash was collected by payment method?",
+      "query": {"metrics": ["cash_collected"], "dimensions": ["method"]},
+      "reference_sql": "SELECT method, SUM(amount) FROM payments GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q18", "question": "How much cash was collected by customer region?",
+      "query": {"metrics": ["cash_collected"], "dimensions": ["region"]},
+      "reference_sql": "SELECT c.region, SUM(p.amount) FROM payments p LEFT JOIN orders o ON o.order_id = p.order_id LEFT JOIN customers c ON c.customer_id = o.customer_id GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q19", "question": "How many shipments went out each month?",
+      "query": {"metrics": ["shipment_count"], "dimensions": ["month"]},
+      "reference_sql": "SELECT substr(shipped_date, 1, 7), COUNT(*) FROM shipments GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    },
+    {
+      "id": "Q20", "question": "What is the average list price by category?",
+      "query": {"metrics": ["avg_list_price"], "dimensions": ["category"]},
+      "reference_sql": "SELECT category, AVG(unit_price) FROM products GROUP BY 1 ORDER BY 1",
+      "reference_params": []
+    }
+  ]
+}

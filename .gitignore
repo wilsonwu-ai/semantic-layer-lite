@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+build/
+dist/
+*.egg-info/
+*.sqlite
+semantic.json
+!examples/semantic.json
+proposed.json

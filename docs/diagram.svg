@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 624" width="1200" height="624" role="img" aria-labelledby="t d" font-family="'Benton Sans','BentonSans','Public Sans','Helvetica Neue',Arial,sans-serif">
+  <title id="t">semantic-layer-lite: from a SQLite file to one safe query</title>
+  <desc id="d">Data flow showing infer proposing joins and metrics from a SQLite file, a person approving them in semantic.json, and each agent question then compiling through approved joins only into one read-only query whose answer carries its join path and metric definition.</desc>
+  <defs>
+    <marker id="sll-arrow-navy" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#0A2942"/>
+    </marker>
+    <marker id="sll-arrow-copper" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#A8481B"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="624" fill="#F5F7FA"/>
+
+  <!-- title -->
+  <text x="24" y="52" font-size="28" font-weight="700" fill="#0A2942">From a SQLite file to one safe query</text>
+
+  <!-- row bands -->
+  <rect x="8" y="76" width="1184" height="212" rx="8" fill="none" stroke="#D5DCE5" stroke-width="1"/>
+  <rect x="8" y="336" width="1184" height="208" rx="8" fill="none" stroke="#D5DCE5" stroke-width="1"/>
+  <text x="24" y="104" font-size="15" font-weight="700" letter-spacing="0.12em" fill="#4C5A6B">SET UP ONCE</text>
+  <text x="24" y="364" font-size="15" font-weight="700" letter-spacing="0.12em" fill="#4C5A6B">EVERY QUESTION</text>
+
+  <!-- band note, top right -->
+  <text x="744" y="188" font-size="16" fill="#4C5A6B">Set up once. Every later question</text>
+  <text x="744" y="212" font-size="16" fill="#4C5A6B">goes through the approved model.</text>
+
+  <!-- arrows (drawn before boxes) -->
+  <line x1="220" y1="196" x2="264" y2="196" stroke="#0A2942" stroke-width="2" marker-end="url(#sll-arrow-navy)"/>
+  <line x1="460" y1="196" x2="504" y2="196" stroke="#0A2942" stroke-width="2" marker-end="url(#sll-arrow-navy)"/>
+  <line x1="602" y1="264" x2="602" y2="384" stroke="#A8481B" stroke-width="2.4" marker-end="url(#sll-arrow-copper)"/>
+  <line x1="460" y1="452" x2="504" y2="452" stroke="#0A2942" stroke-width="2" marker-end="url(#sll-arrow-navy)"/>
+  <line x1="700" y1="452" x2="744" y2="452" stroke="#0A2942" stroke-width="2" marker-end="url(#sll-arrow-navy)"/>
+  <line x1="940" y1="452" x2="984" y2="452" stroke="#0A2942" stroke-width="2" marker-end="url(#sll-arrow-navy)"/>
+
+  <!-- arrow label with paper mask, on open canvas between the bands -->
+  <rect x="612" y="300" width="204" height="24" rx="2" fill="#F5F7FA"/>
+  <text x="620" y="317" font-size="16" font-weight="700" fill="#14212F">approved joins only</text>
+
+  <!-- row 1 nodes -->
+  <rect x="24" y="128" width="196" height="136" rx="6" fill="#E6ECF3" stroke="#77859A" stroke-width="1.2"/>
+  <text x="122" y="156" font-size="15" font-weight="700" letter-spacing="0.12em" fill="#4C5A6B" text-anchor="middle">INPUT</text>
+  <text x="122" y="186" font-size="20" font-weight="700" fill="#0A2942" text-anchor="middle">SQLite file</text>
+  <text x="122" y="212" font-size="16" fill="#14212F" text-anchor="middle">your database,</text>
+  <text x="122" y="232" font-size="16" fill="#14212F" text-anchor="middle">opened read-only</text>
+
+  <rect x="264" y="128" width="196" height="136" rx="6" fill="#FFFFFF" stroke="#0A2942" stroke-width="1.6"/>
+  <text x="362" y="156" font-size="15" font-weight="700" letter-spacing="0.12em" fill="#4C5A6B" text-anchor="middle">MODULE</text>
+  <text x="362" y="186" font-size="20" font-weight="700" fill="#0A2942" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace">infer</text>
+  <text x="362" y="212" font-size="16" fill="#14212F" text-anchor="middle">proposes joins,</text>
+  <text x="362" y="232" font-size="16" fill="#14212F" text-anchor="middle">metrics and</text>
+  <text x="362" y="252" font-size="16" fill="#14212F" text-anchor="middle">dimensions</text>
+
+  <rect x="504" y="128" width="196" height="136" rx="6" fill="#FBEEE3" stroke="#A8481B" stroke-width="2"/>
+  <text x="602" y="156" font-size="15" font-weight="700" letter-spacing="0.12em" fill="#A8481B" text-anchor="middle">FILE</text>
+  <text x="602" y="186" font-size="20" font-weight="700" fill="#0A2942" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace">semantic.json</text>
+  <text x="602" y="212" font-size="16" fill="#14212F" text-anchor="middle">a person marks</text>
+  <text x="602" y="232" font-size="16" fill="#14212F" text-anchor="middle">items approved</text>
+  <text x="602" y="252" font-size="16" fill="#14212F" text-anchor="middle">or rejected</text>
+
+  <!-- row 2 nodes -->
+  <rect x="264" y="384" width="196" height="136" rx="6" fill="#E6ECF3" stroke="#77859A" stroke-width="1.2"/>
+  <text x="362" y="412" font-size="15" font-weight="700" letter-spacing="0.12em" fill="#4C5A6B" text-anchor="middle">INPUT</text>
+  <text x="362" y="442" font-size="20" font-weight="700" fill="#0A2942" text-anchor="middle">Agent question</text>
+  <text x="362" y="468" font-size="16" fill="#14212F" text-anchor="middle">a metric and</text>
+  <text x="362" y="488" font-size="16" fill="#14212F" text-anchor="middle">what to group by</text>
+
+  <rect x="504" y="384" width="196" height="136" rx="6" fill="#FFFFFF" stroke="#0A2942" stroke-width="1.6"/>
+  <text x="602" y="412" font-size="15" font-weight="700" letter-spacing="0.12em" fill="#4C5A6B" text-anchor="middle">MODULE</text>
+  <text x="602" y="442" font-size="20" font-weight="700" fill="#0A2942" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace">compile</text>
+  <text x="602" y="468" font-size="16" fill="#14212F" text-anchor="middle">plan first, then</text>
+  <text x="602" y="488" font-size="16" fill="#14212F" text-anchor="middle">one SELECT</text>
+  <text x="602" y="508" font-size="16" fill="#14212F" text-anchor="middle">refuses if unsafe</text>
+
+  <rect x="744" y="384" width="196" height="136" rx="6" fill="#FFFFFF" stroke="#0A2942" stroke-width="1.6"/>
+  <text x="842" y="412" font-size="15" font-weight="700" letter-spacing="0.12em" fill="#4C5A6B" text-anchor="middle">MODULE</text>
+  <text x="842" y="442" font-size="20" font-weight="700" fill="#0A2942" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace">run</text>
+  <text x="842" y="468" font-size="16" fill="#14212F" text-anchor="middle">runs the SELECT</text>
+  <text x="842" y="488" font-size="16" fill="#14212F" text-anchor="middle">read-only</text>
+
+  <rect x="984" y="384" width="196" height="136" rx="6" fill="#FFFFFF" stroke="#0A2942" stroke-width="1.6"/>
+  <text x="1082" y="412" font-size="15" font-weight="700" letter-spacing="0.12em" fill="#4C5A6B" text-anchor="middle">MODULE</text>
+  <text x="1082" y="442" font-size="20" font-weight="700" fill="#0A2942" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace">explain</text>
+  <text x="1082" y="468" font-size="16" fill="#14212F" text-anchor="middle">answer with its</text>
+  <text x="1082" y="488" font-size="16" fill="#14212F" text-anchor="middle">join path and</text>
+  <text x="1082" y="508" font-size="16" fill="#14212F" text-anchor="middle">metric definition</text>
+
+  <!-- legend strip -->
+  <line x1="24" y1="568" x2="1176" y2="568" stroke="#D5DCE5" stroke-width="1"/>
+  <rect x="24" y="584" width="28" height="18" rx="3" fill="#FFFFFF" stroke="#0A2942" stroke-width="1.6"/>
+  <text x="60" y="600" font-size="16" fill="#14212F">module</text>
+  <rect x="160" y="584" width="28" height="18" rx="3" fill="#E6ECF3" stroke="#77859A" stroke-width="1.2"/>
+  <text x="196" y="600" font-size="16" fill="#14212F">input</text>
+  <rect x="300" y="584" width="28" height="18" rx="3" fill="#FBEEE3" stroke="#A8481B" stroke-width="2"/>
+  <text x="336" y="600" font-size="16" fill="#14212F">approved model and the path that reads it</text>
+  <line x1="780" y1="593" x2="820" y2="593" stroke="#0A2942" stroke-width="2" marker-end="url(#sll-arrow-navy)"/>
+  <text x="832" y="600" font-size="16" fill="#14212F">data handoff</text>
+</svg>
